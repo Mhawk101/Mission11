@@ -10,7 +10,6 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<BookstoreContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("BookstoreConnection")));
 
-// ✅ MOVE CORS HERE (before build)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -29,7 +28,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// ✅ Use CORS here
 app.UseCors("AllowAll");
 
 app.UseAuthorization();

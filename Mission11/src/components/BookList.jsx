@@ -1,3 +1,5 @@
+// booklist component
+
 import { useEffect, useState } from "react";
 
 function BookList() {
@@ -6,6 +8,7 @@ function BookList() {
   const [pageSize, setPageSize] = useState(5);
   const [sortAsc, setSortAsc] = useState(true); 
 
+  //gets the json data from the API
   useEffect(() => {
     fetch("https://localhost:7067/books")
       .then((res) => res.json())
@@ -13,7 +16,7 @@ function BookList() {
       .catch((err) => console.error(err));
   }, []);
 
-  // ✅ SORT BY TITLE (based on toggle)
+  // Sort by title a to z using an arrow function
   const sortedBooks = [...books].sort((a, b) => {
     if (sortAsc) {
       return a.title.localeCompare(b.title);
@@ -22,7 +25,7 @@ function BookList() {
     }
   });
 
-  // PAGINATION
+  // Paginate based on the selected number with the default being 5
   const start = (page - 1) * pageSize;
   const paginatedBooks = sortedBooks.slice(start, start + pageSize);
 
@@ -46,6 +49,7 @@ function BookList() {
           setPage(1);
         }}
       >
+        {/* give options to change the amound displayed on a page */}
         <option value={5}>5</option>
         <option value={10}>10</option>
         <option value={20}>20</option>

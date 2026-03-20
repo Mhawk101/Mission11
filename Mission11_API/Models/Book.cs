@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+
+//model for the book class with all the attributes 
 public class Book
 {
     [Key]
