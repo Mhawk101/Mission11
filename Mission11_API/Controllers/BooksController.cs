@@ -13,10 +13,51 @@ public class BooksController : ControllerBase
         _context = context;
     }
     // handles http get requests to get use the GetBooks() function
-    [HttpGet]
-    public async Task<IActionResult> GetBooks()
+
+    [HttpGet("categories")]
+    public async Task<IActionResult> GetCategories()
     {
-        var books = await _context.Books.ToListAsync();
-        return Ok(books);
+        var categories = await _context.Books
+            .Select(b => b.Category)
+            .Distinct()
+            .ToListAsync();
+
+        return Ok(categories);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetBooks(
+        int pageNumber = 1,
+        int pageSize = 5,
+        [FromQuery(Name = "categories[]")] string[] categories = null)
+    {  
+        //create a default query
+        var query = _context.Books.AsQueryable();
+
+        //filter by the categories selected
+        if (categories != null && categories.Any())
+        {
+            query = query.Where(b => categories.Contains(b.Category));
+        }
+
+        //Count the books after the filter
+        var totalBooks = await query.CountAsync();
+
+        //Apply Pagination after filtering
+        var books = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        //return books
+        return Ok(new
+        {
+            data = books,
+            totalBooks = totalBooks,
+            pageNumber = pageNumber,
+            pageSize = pageSize
+        }
+            );
+        
     }
 }

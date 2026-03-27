@@ -1,12 +1,19 @@
-// This file is the function that returns the booklist component
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import BookList from "./components/BookList";
+import CartPage from "./components/CartPage";
+import { CartProvider } from "./context/CartContext";
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 function App() {
   return (
-    <div>
-      <BookList />
-    </div>
+    <CartProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<BookList />} />
+          <Route path="/cart" element={<CartPage />} />
+        </Routes>
+      </Router>
+    </CartProvider>
   );
 }
 
