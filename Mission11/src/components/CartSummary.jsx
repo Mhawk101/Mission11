@@ -19,6 +19,8 @@ function CartSummary() {
       <h4>Cart Summary</h4>
       <hr />
       <p>
+
+        {/* The bootstrap badge extra requirement is here */}
         <strong>Items in Cart:</strong> 
         <span className="badge bg-primary ms-2">{cart.length}</span>
       </p>
