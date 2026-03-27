@@ -1,6 +1,7 @@
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 
+//returns the cart page
 function CartPage() {
   const { cart, removeFromCart } = useCart();
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ function CartPage() {
             </div>
           </div>
 
-          {/* Continue Shopping Button */}
+          {/* Continue Shopping Button - takes you back to main page */}
           <button 
             className="btn btn-primary"
             onClick={() => navigate(-1)}

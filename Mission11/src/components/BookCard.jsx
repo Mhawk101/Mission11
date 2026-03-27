@@ -1,13 +1,16 @@
-//This file creates a book card that is 
+//This file creates a book card component with teh attributes of all books and book actions
+//that is displayed for each book on the book list page. 
 
 import { useState } from 'react';
 import { useCart } from '../context/CartContext';
 
+//creates the book card function
 function BookCard({ book }) {
   const [quantity, setQuantity] = useState(1);
   const [showAlert, setShowAlert] = useState(false);
   const { addToCart } = useCart();
 
+  //adds to car the book id, title, price, and quanity with a default quantity of 1
   const handleAddToCart = () => {
     addToCart({
       bookId: book.bookID,
@@ -20,6 +23,7 @@ function BookCard({ book }) {
     setTimeout(() => setShowAlert(false), 2000);
   };
 
+  //displays all of the book informations with the book title being displayed the largest
   return (
     <div className="card p-3 mb-3">
       <h3>{book.title}</h3>
@@ -30,6 +34,7 @@ function BookCard({ book }) {
       <p><strong>Pages:</strong> {book.pageCount}</p>
       <p><strong>Price:</strong> ${book.price}</p>
 
+      {/* bonus bootstrap functionality that shows the added to cart alert within the card */}
       {showAlert && (
         <div className="alert alert-success alert-dismissible fade show" role="alert">
           <strong>Success!</strong> Added "{book.title}" to cart
@@ -41,6 +46,7 @@ function BookCard({ book }) {
         </div>
       )}
 
+      
       <div className="mb-3">
         <label htmlFor={`qty-${book.bookID}`} className="form-label">Quantity:</label>
         <input

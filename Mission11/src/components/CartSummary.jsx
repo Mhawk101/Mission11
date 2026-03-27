@@ -1,6 +1,7 @@
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 
+//creates a cart summary that is displayed on the main page. 
 function CartSummary() {
   const { cart } = useCart();
   const navigate = useNavigate();
