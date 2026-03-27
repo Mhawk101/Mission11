@@ -42,7 +42,7 @@ https://localhost:7067/books
 2. Navigate to the frontend folder:
 
 ```
-cd bookstore-frontend
+cd Mission11
 ```
 
 3. Install dependencies (first time only):
