@@ -1,7 +1,15 @@
-import React from 'react';
+type CategoryFilterProps = {
+  categories: string[];
+  selectedCategories: string[];
+  onCategoryChange: (categoryName: string, isChecked: boolean) => void;
+};
 
 //filters by category of books.
-function CategoryFilter({ categories, selectedCategories, onCategoryChange }) {
+function CategoryFilter({
+  categories,
+  selectedCategories,
+  onCategoryChange,
+}: CategoryFilterProps) {
   return (
     <div className="filter-sidebar mb-4">
       <h3>Filter by Category</h3>

@@ -3,11 +3,16 @@
 
 import { useState } from 'react';
 import { useCart } from '../context/CartContext';
+import type { Book } from '../types';
+
+type BookCardProps = {
+  book: Book;
+};
 
 //creates the book card function
-function BookCard({ book }) {
-  const [quantity, setQuantity] = useState(1);
-  const [showAlert, setShowAlert] = useState(false);
+function BookCard({ book }: BookCardProps) {
+  const [quantity, setQuantity] = useState<number>(1);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
   const { addToCart } = useCart();
 
   //adds to car the book id, title, price, and quanity with a default quantity of 1
