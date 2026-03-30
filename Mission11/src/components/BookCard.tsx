@@ -15,7 +15,7 @@ function BookCard({ book }: BookCardProps) {
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const { addToCart } = useCart();
 
-  //adds to car the book id, title, price, and quanity with a default quantity of 1
+  //adds to card the book id, title, price, and quanity with a default quantity of 1
   const handleAddToCart = () => {
     addToCart({
       bookId: book.bookID,
@@ -28,6 +28,7 @@ function BookCard({ book }: BookCardProps) {
     setTimeout(() => setShowAlert(false), 2000);
   };
 
+  //
   //displays all of the book informations with the book title being displayed the largest
   return (
     <div className="card p-3 mb-3">
