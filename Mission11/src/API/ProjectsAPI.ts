@@ -16,7 +16,7 @@ export const fetchBooks = async (
   });
 
   try {
-    const res = await fetch(`https://localhost:7067/books?${params.toString()}`);
+    const res = await fetch(`https://michael-hawkins-book-mission13-ekdkh7etckcxfvdg.westeurope-01.azurewebsites.net/books?${params.toString()}`);
     
     if (!res.ok) {
         throw new Error("Failed to fetch book.")
@@ -33,7 +33,7 @@ export const fetchBooks = async (
 //fetches categories for updating categories
 export const fetchCategories = async (): Promise<string[]> => {
   try {
-    const res = await fetch('https://localhost:7067/books/categories');
+    const res = await fetch('https://michael-hawkins-book-mission13-ekdkh7etckcxfvdg.westeurope-01.azurewebsites.net/books/categories');
     const data: string[] = await res.json();
     return data;
   } catch (error) {
@@ -45,7 +45,7 @@ export const fetchCategories = async (): Promise<string[]> => {
 //adds a book from the post method in the controller
 export const addBook = async (newBook: Book): Promise<Book> => {
     try {
-        const res = await fetch('https://localhost:7067/books/AddBook', {
+        const res = await fetch('https://michael-hawkins-book-mission13-ekdkh7etckcxfvdg.westeurope-01.azurewebsites.net/books/AddBook', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -67,7 +67,7 @@ export const addBook = async (newBook: Book): Promise<Book> => {
 //Updates the book with the put method from the controller
 export const updateBook = async (bookId: number, updatedBook: Book): Promise<Book> => {
     try {
-        const res = await fetch(`https://localhost:7067/books/UpdateBook/${bookId}`, {
+        const res = await fetch(`https://michael-hawkins-book-mission13-ekdkh7etckcxfvdg.westeurope-01.azurewebsites.net/books/UpdateBook/${bookId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -89,7 +89,7 @@ export const updateBook = async (bookId: number, updatedBook: Book): Promise<Boo
 //deletes the book by calling the delete method
 export const deleteBook = async (bookId: number): Promise<void> => {
     try {
-        const res = await fetch(`https://localhost:7067/books/DeleteBook/${bookId}`, {
+        const res = await fetch(`https://michael-hawkins-book-mission13-ekdkh7etckcxfvdg.westeurope-01.azurewebsites.net/books/DeleteBook/${bookId}`, {
             method: 'DELETE'
         });
 
