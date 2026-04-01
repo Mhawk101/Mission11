@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<BookstoreContext>(options =>
@@ -24,14 +25,16 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Books API");
+    });
 }
 
 app.UseHttpsRedirection();
-
 app.UseCors("AllowAll");
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

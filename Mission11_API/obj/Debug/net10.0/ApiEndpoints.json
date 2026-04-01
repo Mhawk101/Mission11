@@ -27,6 +27,22 @@
   },
   {
     "ContainingType": "BooksController",
+    "Method": "AddBook",
+    "RelativePath": "Books/AddBook",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newBook",
+        "Type": "Book",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BooksController",
     "Method": "GetCategories",
     "RelativePath": "Books/categories",
     "HttpMethod": "GET",
@@ -36,24 +52,40 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "Mission11_API.Controllers.WeatherForecastController",
-    "Method": "Get",
-    "RelativePath": "WeatherForecast",
-    "HttpMethod": "GET",
+    "ContainingType": "BooksController",
+    "Method": "DeleteBook",
+    "RelativePath": "Books/DeleteBook/{bookId}",
+    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
+    "Parameters": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[Mission11_API.WeatherForecast, Mission11_API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
+        "Name": "bookId",
+        "Type": "System.Int32",
+        "IsRequired": true
       }
     ],
-    "EndpointName": "GetWeatherForecast"
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BooksController",
+    "Method": "UpdateBook",
+    "RelativePath": "Books/UpdateBook/{bookId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "bookId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "updatedBook",
+        "Type": "Book",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

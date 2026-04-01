@@ -12,7 +12,6 @@ public class BooksController : ControllerBase
     {
         _context = context;
     }
-    // handles http get requests to get use the GetBooks() function
 
     [HttpGet("categories")]
     public async Task<IActionResult> GetCategories()
@@ -30,7 +29,7 @@ public class BooksController : ControllerBase
         int pageNumber = 1,
         int pageSize = 5,
         [FromQuery(Name = "categories[]")] string[] categories = null)
-    {  
+    {
         //create a default query
         var query = _context.Books.AsQueryable();
 
@@ -56,8 +55,50 @@ public class BooksController : ControllerBase
             totalBooks = totalBooks,
             pageNumber = pageNumber,
             pageSize = pageSize
+        });
+    }
+
+    [HttpPost("AddBook")]
+    public IActionResult AddBook([FromBody] Book newBook)
+    {
+        _context.Books.Add(newBook);
+        _context.SaveChanges();
+        return Ok(newBook);
+    }
+
+    [HttpPut("UpdateBook/{bookId}")]
+    public IActionResult UpdateBook(int bookId, [FromBody] Book updatedBook)
+    {
+        var existingBook = _context.Books.Find(bookId);
+
+        existingBook.Title = updatedBook.Title;
+        existingBook.Author = updatedBook.Author;
+        existingBook.Publisher = updatedBook.Publisher;
+        existingBook.ISBN = updatedBook.ISBN;
+        existingBook.Classification = updatedBook.Classification;
+        existingBook.Category = updatedBook.Category;
+        existingBook.PageCount = updatedBook.PageCount;
+        existingBook.Price = updatedBook.Price;
+
+        _context.Books.Update(existingBook);
+        _context.SaveChanges();
+
+        return Ok(existingBook);
+    }
+
+    [HttpDelete("DeleteBook/{bookId}")]
+    public IActionResult DeleteBook(int bookId)
+    {
+        var book = _context.Books.Find(bookId);
+
+        if (book == null)
+        {
+            return NotFound(new { message = "BookNotFound" });
         }
-            );
-        
+
+        _context.Books.Remove(book);
+        _context.SaveChanges();
+
+        return NoContent();
     }
 }
