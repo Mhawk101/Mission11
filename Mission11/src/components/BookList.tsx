@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 import CategoryFilter from './CategoryFilter';
 import CartSummary from './CartSummary';
 import BookCard from './BookCard';
+// Explicit extension to avoid resolution issues in some bundler setups
+import Pagination from './pagination.tsx';
 import type { Book, BookResponse } from '../types';
+import {fetchCategories} from "../API/ProjectsAPI"
+import {fetchBooks} from "../API/ProjectsAPI"
 
 function BookList() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -12,46 +16,49 @@ function BookList() {
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [totalBooks, setTotalBooks] = useState<number>(0);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Fetch categories on component mount (only once)
+  // Fetch categories on component mount 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const loadCategories = async () => {
       try {
-        const res = await fetch('https://localhost:7067/books/categories');
-        const data: string[] = await res.json();
+        setLoading(true);
+        const data = await fetchCategories()
         setCategories(data);
       } catch (error) {
-        console.error(error);
+        setError((error as Error).message);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchCategories();
+    loadCategories();
   }, []);
+
 
   // Fetch books when categories, page, or pageSize changes
   useEffect(() => {
-    const fetchBooks = async () => {
-      const params = new URLSearchParams();
-      params.append('pageNumber', page.toString());
-      params.append('pageSize', pageSize.toString());
+  const loadBooks = async () => {
+    try {
+      setLoading(true);
 
-      selectedCategories.forEach((category) => {
-        params.append('categories[]', category);
-      });
+      const data = await fetchBooks(pageSize, page, selectedCategories);
 
-      try {
-        const res = await fetch(`https://localhost:7067/books?${params.toString()}`);
-        const data: BookResponse = await res.json();
-        setBooks(data.data);
-        setTotalBooks(data.totalBooks);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+      setBooks(data.data);
+      setTotalBooks(data.totalBooks);
+    } catch (error) {
+      setError((error as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchBooks();
-  }, [selectedCategories, page, pageSize]);
+  loadBooks();
+}, [selectedCategories, page, pageSize]);
 
+  if (loading) return <p>Loading Books...</p>
+  if (error) return <p>Error: {error}</p>
   // Sort the books that came from API
   const sortedBooks = [...books].sort((a, b) =>
     sortAsc ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title),
@@ -66,6 +73,8 @@ function BookList() {
       setPage(1);
     }
   };
+
+  const totalPages = Math.ceil(totalBooks / pageSize);
 
   return (
     <div className="container-fluid">
@@ -96,21 +105,6 @@ function BookList() {
             Sort by Title ({sortAsc ? 'A -> Z' : 'Z -> A'})
           </button>
 
-          {/* Page Size Selector */}
-          <h3>Books to display: </h3>
-          <select
-            className="form-select mb-3"
-            onChange={(e) => {
-              setPageSize(Number(e.target.value));
-              setPage(1);
-            }}
-            value={pageSize}
-          >
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-          </select>
-
           {/* Book List */}
           <div className="row">
             {sortedBooks.map((b) => (
@@ -121,25 +115,13 @@ function BookList() {
           </div>
 
           {/* Pagination */}
-          <div className="d-flex gap-2 justify-content-center mt-4">
-            <button
-              className="btn btn-primary"
-              onClick={() => setPage(page - 1)}
-              disabled={page === 1}
-            >
-              Previous
-            </button>
-
-            <span className="align-self-center">Page {page}</span>
-
-            <button
-              className="btn btn-primary"
-              onClick={() => setPage(page + 1)}
-              disabled={page * pageSize >= totalBooks}
-            >
-              Next
-            </button>
-          </div>
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            pageSize={pageSize}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+          />
         </div>
       </div>
     </div>
